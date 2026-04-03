@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Менің кітаптарым</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/fill/style.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <svg class="logo-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Кітап логотипі">
+        <rect x="6"  y="8"  width="22" height="28" rx="3" fill="var(--accent)" opacity="0.18"/>
+        <rect x="10" y="4"  width="22" height="28" rx="3" fill="var(--accent)" opacity="0.35"/>
+        <rect x="14" y="8"  width="22" height="28" rx="3" stroke="var(--accent)" stroke-width="2.2" fill="var(--surface)"/>
+        <line x1="20" y1="16" x2="30" y2="16" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="20" y1="21" x2="30" y2="21" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="20" y1="26" x2="26" y2="26" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">Кітапхана</span>
+    </div>
+    <nav class="main-nav">
+      <button class="nav-btn active" data-tab="library"><i class="ph ph-books"></i> <span>Кітаптар</span></button>
+      <button class="nav-btn" data-tab="wishlist"><i class="ph ph-bookmark-simple"></i> <span>Жоспар</span></button>
+      <button class="nav-btn" data-tab="stats"><i class="ph ph-chart-bar"></i> <span>Статистика</span></button>
+    </nav>
+    <div class="header-actions">
+      <button class="btn-reset-sm" id="resetDataBtn" title="Бастапқы деректерге қайту"><i class="ph ph-arrow-counter-clockwise"></i></button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Тақырып"><i class="ph ph-moon" id="themeIcon"></i></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-shapes" aria-hidden="true"><span class="shape s1"></span><span class="shape s2"></span><span class="shape s3"></span></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Жеке кітапхана</p>
+    <h1 class="hero-title">Менің&nbsp;<em>кітаптарым</em></h1>
+    <p class="hero-desc">Оқыған кітаптарымды, ойларымды және болашақ оқу тізімімді сақтайтын жеке кеңістік.</p>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-num" data-role="count">0</span><span class="hstat-label">Кітап</span></div>
+      <div class="hstat-divider"></div>
+      <div class="hstat"><span class="hstat-num" id="totalPrice">0</span><span class="hstat-label">Жалпы баға</span></div>
+      <div class="hstat-divider"></div>
+      <div class="hstat"><span class="hstat-num" data-role="authors">0</span><span class="hstat-label">Авторлар</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true"><i class="ph ph-caret-down"></i></div>
+</section>
+
+<!-- MAIN -->
+<main class="main-wrap">
+
+  <!-- TAB: LIBRARY -->
+  <section class="tab-panel active" id="tab-library">
+    <div class="controls-bar">
+      <div class="search-wrap">
+        <i class="ph ph-magnifying-glass search-icon"></i>
+        <input type="text" class="search-input" id="searchInput" placeholder="Кітап немесе автор іздеу…" />
+        <button class="clear-search hidden" id="clearSearch"><i class="ph ph-x"></i></button>
+      </div>
+      <div class="filter-chips">
+        <button class="chip active" data-filter="all">Барлығы</button>
+        <button class="chip" data-filter="Казақ">Қазақ</button>
+        <button class="chip" data-filter="Психология">Психология</button>
+        <button class="chip" data-filter="Философия">Философия</button>
+        <button class="chip" data-filter="Бизнес">Бизнес</button>
+        <button class="chip" data-filter="Классика">Классика</button>
+        <button class="chip" data-filter="Ғылым">Ғылым</button>
+      </div>
+      <div class="controls-right">
+        <button class="btn-add-sm" id="addBookBtn"><i class="ph ph-plus"></i> Кітап</button>
+        <div class="view-toggle">
+          <button class="view-btn active" id="viewGrid"><i class="ph ph-squares-four"></i></button>
+          <button class="view-btn" id="viewList"><i class="ph ph-list-bullets"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add New Book Form -->
+    <div class="wish-form-wrap hidden" id="addBookForm">
+      <div class="wish-form">
+        <h3><i class="ph ph-plus-circle"></i> Жаңа кітап қосу</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Кітап атауы *</label><input id="newTitle" placeholder="Кітап атауы…" /></div>
+          <div class="form-group"><label>Автор *</label><input id="newAuthor" placeholder="Автор аты…" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Бағасы (₸)</label><input type="number" id="newPrice" placeholder="0" /></div>
+          <div class="form-group"><label>Категория</label>
+            <select id="newCat"><option value="Жалпы">Жалпы</option><option value="Психология">Психология</option><option value="Философия">Философия</option><option value="Бизнес">Бизнес</option><option value="Казақ">Қазақ әдебиеті</option><option value="Классика">Классика</option><option value="Ғылым">Ғылым</option></select>
+          </div>
+          <div class="form-group"><label>Эмодзи</label>
+            <select id="newEmoji"><option>📖</option><option>📗</option><option>📕</option><option>📘</option><option>📙</option><option>📚</option><option>⚡</option><option>🌟</option><option>🧠</option><option>❤️</option><option>🌊</option><option>🏔️</option><option>🌿</option><option>🌑</option><option>⏳</option><option>💡</option><option>🌈</option><option>☀️</option><option>🎸</option><option>🎨</option><option>📜</option></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full"><label><i class="ph ph-image"></i> Мұқаба URL (қажет болса)</label><input id="newCover" placeholder="https://… суреттің сілтемесі" /></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" id="saveNewBook"><i class="ph ph-floppy-disk"></i> Сақтау</button>
+          <button class="btn-cancel" id="cancelNewBook">Болдырмау</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="books-grid" id="booksGrid"></div>
+    <p class="no-results hidden" id="noResults"><i class="ph ph-magnifying-glass"></i> Ештеңе табылмады</p>
+  </section>
+
+  <!-- TAB: WISHLIST -->
+  <section class="tab-panel" id="tab-wishlist">
+    <div class="section-header">
+      <h2 class="section-title"><i class="ph ph-bookmark-simple-fill"></i> Оқу жоспарым</h2>
+      <p class="section-sub">Оқуды жоспарлап жүрген кітаптар — сілтемелерімен</p>
+    </div>
+
+    <div class="wishlist-controls">
+      <button class="btn-add" id="addWishBtn"><i class="ph ph-plus"></i> Кітап қосу</button>
+    </div>
+
+    <div class="wish-form-wrap hidden" id="wishForm">
+      <div class="wish-form">
+        <h3>Жаңа кітап қосу</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Кітап атауы *</label><input id="wTitle" placeholder="Кітап атауы…" /></div>
+          <div class="form-group"><label>Автор *</label><input id="wAuthor" placeholder="Автор аты…" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Бағасы (₸)</label><input type="number" id="wPrice" placeholder="0" /></div>
+          <div class="form-group"><label>Категория</label>
+            <select id="wCategory"><option value="Жалпы">Жалпы</option><option value="Психология">Психология</option><option value="Философия">Философия</option><option value="Бизнес">Бизнес</option><option value="Казақ">Қазақ әдебиеті</option><option value="Классика">Классика</option><option value="Ғылым">Ғылым</option></select>
+          </div>
+        </div>
+        <!-- Single link -->
+        <div class="shop-links-section">
+          <label class="shop-section-label"><i class="ph ph-link"></i> Сілтеме (қажет болса толтырыңыз)</label>
+          <div class="shop-inputs">
+            <div class="shop-input-row single-link-row"><i class="ph ph-link link-icon-sm"></i><input id="wShopLink" placeholder="https://… (кез келген сілтеме)" /></div>
+          </div>
+        </div>
+        <div class="form-group full"><label>Ескертпе</label><textarea id="wNote" placeholder="Неге оқығыңыз келеді?" rows="2"></textarea></div>
+        <div class="form-actions">
+          <button class="btn-save" id="saveWish"><i class="ph ph-check"></i> Сақтау</button>
+          <button class="btn-cancel" id="cancelWish">Болдырмау</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wishlist-table-wrap">
+      <table class="wishlist-table" id="wishTable">
+        <thead><tr><th>#</th><th>Кітап атауы</th><th>Автор</th><th>Категория</th><th>Бағасы</th><th>Сілтеме</th><th>Ескертпе</th><th></th></tr></thead>
+        <tbody id="wishTableBody"></tbody>
+      </table>
+      <p class="wish-empty hidden" id="wishEmpty"><i class="ph ph-bookmark-simple"></i> Тізім бос. «Кітап қосу» батырмасын басыңыз.</p>
+    </div>
+  </section>
+
+  <!-- TAB: STATS -->
+  <section class="tab-panel" id="tab-stats">
+    <div class="section-header">
+      <h2 class="section-title"><i class="ph ph-chart-bar-fill"></i> Статистика</h2>
+      <p class="section-sub">Кітапханамның сандық мәліметтері</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card big"><div class="stat-icon"><i class="ph ph-books"></i></div><div class="stat-info"><span class="stat-val" id="statBookCount">0</span><span class="stat-lbl">Жалпы кітап</span></div></div>
+      <div class="stat-card big"><div class="stat-icon accent2"><i class="ph ph-currency-circle-dollar"></i></div><div class="stat-info"><span class="stat-val" id="statTotalPrice">0</span><span class="stat-lbl">Жалпы шығын</span></div></div>
+      <div class="stat-card big"><div class="stat-icon accent3"><i class="ph ph-user"></i></div><div class="stat-info"><span class="stat-val" id="statAuthors">0</span><span class="stat-lbl">Жазушылар</span></div></div>
+      <div class="stat-card big"><div class="stat-icon accent4"><i class="ph ph-star"></i></div><div class="stat-info"><span class="stat-val" id="statAvgPrice">0</span><span class="stat-lbl">Орташа баға</span></div></div>
+    </div>
+    <div class="stats-split">
+      <div class="stats-block"><h3 class="stats-block-title"><i class="ph ph-pen-nib"></i> Ең көп авторлар</h3><ul class="authors-list" id="authorsList"></ul></div>
+      <div class="stats-block"><h3 class="stats-block-title"><i class="ph ph-tag"></i> Категориялар</h3><ul class="cat-list" id="catList"></ul></div>
+    </div>
+    <div class="price-section">
+      <div class="price-section-header">
+        <h3 class="stats-block-title" id="priceSectionTitle"><i class="ph ph-sort-descending"></i> Ең қымбат 10 кітап</h3>
+        <div class="price-filters">
+          <button class="price-filter-btn active" data-price-mode="expensive"><i class="ph ph-arrow-fat-up"></i> Ең қымбат</button>
+          <button class="price-filter-btn" data-price-mode="cheap"><i class="ph ph-arrow-fat-down"></i> Ең арзан</button>
+        </div>
+      </div>
+      <div class="price-table-wrap">
+        <table class="price-table" id="priceTable"><thead><tr><th>#</th><th>Кітап атауы</th><th>Автор</th><th>Бағасы</th></tr></thead><tbody id="priceTableBody"></tbody></table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modalClose"><i class="ph ph-x"></i></button>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="28">
+        <rect x="14" y="8" width="22" height="28" rx="3" stroke="var(--accent)" stroke-width="2" fill="none"/>
+        <line x1="20" y1="16" x2="30" y2="16" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="21" x2="30" y2="21" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="26" x2="26" y2="26" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>Менің кітаптарым</span>
+    </div>
+    <div class="footer-export">
+      <button class="btn-export" id="exportExcelBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/>
+          <polyline points="9 15 12 18 15 15"/>
+        </svg>
+        Excel-ге экспорт
+      </button>
+      <button class="btn-export btn-export-wish" id="exportWishBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/>
+          <polyline points="9 15 12 18 15 15"/>
+        </svg>
+        Жоспар экспорт
+      </button>
+    </div>
+    <p class="footer-copy">© 2026 · Жеке кітапхана</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<script src="app.js"></script>
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>
