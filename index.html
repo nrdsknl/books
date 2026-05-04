@@ -141,7 +141,6 @@
             <select id="wCategory"><option value="Жалпы">Жалпы</option><option value="Психология">Психология</option><option value="Философия">Философия</option><option value="Бизнес">Бизнес</option><option value="Казақ">Қазақ әдебиеті</option><option value="Классика">Классика</option><option value="Ғылым">Ғылым</option></select>
           </div>
         </div>
-        <!-- Single link -->
         <div class="shop-links-section">
           <label class="shop-section-label"><i class="ph ph-link"></i> Сілтеме (қажет болса толтырыңыз)</label>
           <div class="shop-inputs">
@@ -207,102 +206,86 @@
 
 <!-- FOOTER -->
 <footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-logo">
-      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="28">
-        <rect x="14" y="8" width="22" height="28" rx="3" stroke="var(--accent)" stroke-width="2" fill="none"/>
-        <line x1="20" y1="16" x2="30" y2="16" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="20" y1="21" x2="30" y2="21" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="20" y1="26" x2="26" y2="26" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      <span>Менің кітаптарым</span>
-    </div>
-    <div class="footer-export">
-      <button class="btn-export" id="exportExcelBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="12" y1="18" x2="12" y2="12"/>
-          <polyline points="9 15 12 18 15 15"/>
-        </svg>
-        Excel-ге экспорт
-      </button>
-      <button class="btn-export btn-export-wish" id="exportWishBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="12" y1="18" x2="12" y2="12"/>
-          <polyline points="9 15 12 18 15 15"/>
-        </svg>
-        Жоспар экспорт
-      </button>
-    </div>
-    <p class="footer-copy">© 2026 · Жеке кітапхана</p>
+
+  <!-- Wave separator -->
+  <div class="footer-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,0 C360,64 1080,0 1440,0 L1440,64 L0,64 Z" fill="var(--bg)"/>
+    </svg>
   </div>
+
+  <!-- Main body -->
+  <div class="footer-main">
+    <div class="footer-container">
+
+      <!-- Brand + Socials -->
+      <div class="footer-col footer-col-brand">
+        <div class="footer-logo-row">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="30" aria-hidden="true">
+            <rect x="6"  y="8"  width="22" height="28" rx="3" fill="rgba(255,255,255,.08)"/>
+            <rect x="10" y="4"  width="22" height="28" rx="3" fill="rgba(255,255,255,.15)"/>
+            <rect x="14" y="8"  width="22" height="28" rx="3" stroke="rgba(255,255,255,.8)" stroke-width="2" fill="none"/>
+            <line x1="20" y1="16" x2="30" y2="16" stroke="rgba(255,255,255,.7)" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="20" y1="21" x2="30" y2="21" stroke="rgba(255,255,255,.7)" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="20" y1="26" x2="26" y2="26" stroke="rgba(255,255,255,.7)" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span class="footer-site-name">Менің кітаптарым</span>
+        </div>
+        <p class="footer-desc">Жеке кітапхана — оқыған кітаптарым,<br>ойларым және болашақ оқу жоспарым.</p>
+
+        <!-- Social links -->
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/nrdsknl" target="_blank" rel="noopener noreferrer" class="social-btn social-ig">
+            <span class="social-btn-icon"><i class="ph-fill ph-instagram-logo"></i></span>
+            <span class="social-btn-label">@nrdsknl</span>
+            <span class="social-btn-platform">Instagram</span>
+          </a>
+          <a href="https://t.me/nrdsknl" target="_blank" rel="noopener noreferrer" class="social-btn social-tg">
+            <span class="social-btn-icon"><i class="ph-fill ph-telegram-logo"></i></span>
+            <span class="social-btn-label">@nrdsknl</span>
+            <span class="social-btn-platform">Telegram</span>
+          </a>
+          <a href="mailto:nrdsknl@gmail.com" class="social-btn social-em">
+            <span class="social-btn-icon"><i class="ph-fill ph-envelope-simple"></i></span>
+            <span class="social-btn-label">nrdsknl@gmail.com</span>
+            <span class="social-btn-platform">Email</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Export -->
+      <div class="footer-col footer-col-export">
+        <p class="footer-col-heading"><i class="ph ph-export"></i> Деректерді жүктеу</p>
+        <button class="footer-export-btn" id="exportExcelBtn">
+          <span class="footer-export-icon"><i class="ph ph-microsoft-excel-logo"></i></span>
+          <span class="footer-export-info">
+            <b>Кітапхана</b>
+            <small>Excel (.xlsx) форматта</small>
+          </span>
+        </button>
+        <button class="footer-export-btn footer-export-btn--wish" id="exportWishBtn">
+          <span class="footer-export-icon"><i class="ph ph-bookmark-simple-fill"></i></span>
+          <span class="footer-export-info">
+            <b>Оқу жоспары</b>
+            <small>Excel (.xlsx) форматта</small>
+          </span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="footer-bar">
+    <div class="footer-container">
+      <p class="footer-copy">© 2026 · <strong>Нурдос Төлеуғазыев</strong> · Жеке кітапхана</p>
+      <p class="footer-heart">📚 Кітап оқуды ешқашан тоқтатпа</p>
+    </div>
+  </div>
+
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 <script src="app.js"></script>
-<script data-pplx-inline-edit>
-(function(){
-  if(window===window.top)return;
-  function inlineAll(orig,clone){
-    if(orig.nodeType!==1)return;
-    try{
-      var cs=getComputedStyle(orig);
-      var t='';
-      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
-      clone.style.cssText=t;
-    }catch(e){}
-    var oc=orig.children,cc=clone.children;
-    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
-  }
-  function stripExternal(clone){
-    var imgs=clone.querySelectorAll('img');
-    for(var i=0;i<imgs.length;i++){
-      var s=imgs[i].getAttribute('src');
-      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
-    }
-    var all=clone.querySelectorAll('*');
-    for(var i=0;i<all.length;i++){
-      var st=all[i].style.cssText;
-      if(st&&st.indexOf('url(')>=0){
-        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
-      }
-    }
-  }
-  window.addEventListener('message',function(e){
-    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
-    var scrollX=window.scrollX||window.pageXOffset||0;
-    var scrollY=window.scrollY||window.pageYOffset||0;
-    var w=window.innerWidth,h=window.innerHeight;
-    try{
-      var clone=document.documentElement.cloneNode(true);
-      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
-      for(var i=0;i<rm.length;i++){rm[i].remove();}
-      inlineAll(document.documentElement,clone);
-      stripExternal(clone);
-      var html=new XMLSerializer().serializeToString(clone);
-      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
-        +'<foreignObject width="100%" height="100%">'
-        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
-        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
-        +html+'</div></div></foreignObject></svg>';
-      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
-      var img=new Image();
-      img.onload=function(){
-        var c=document.createElement('canvas');c.width=w;c.height=h;
-        c.getContext('2d').drawImage(img,0,0);
-        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
-      };
-      img.onerror=function(){
-        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
-      };
-      img.src=svgUrl;
-    }catch(err){
-      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
-    }
-  });
-})();
-</script></body>
+</body>
 </html>
