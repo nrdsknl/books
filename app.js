@@ -107,6 +107,7 @@ function nextId() { return BOOKS.length ? Math.max(...BOOKS.map(b => b.id)) + 1 
 
 function animateCount(el, target, dur = 900, sfx = '') {
   if (!el) return;
+  if (!dur) { el.textContent = (isFinite(target) ? Math.round(target).toLocaleString('kk-KZ') : '0') + sfx; return; }
   const st = performance.now();
   (function step(ts) {
     const p = Math.min((ts - st) / dur, 1);
@@ -271,30 +272,31 @@ function openModal(id) {
     <div class="modal-num">#${String(b.id).padStart(2,'0')}</div>
     ${spineHtml}
     <h2 class="modal-title">${b.title}</h2>
-    <div class="modal-author"><i class="ph ph-user"></i>${b.author}</div>
-    <div class="modal-status-bar">
-      <select class="status-select ${statusClass}" id="modalStatus">
-        <option value="unread"  ${b.status==='unread' ?'selected':''}>📋 Жоспарда</option>
-        <option value="reading" ${b.status==='reading'?'selected':''}>📖 Оқып жатырмын</option>
-        <option value="read"    ${b.status==='read'   ?'selected':''}>✅ Оқыдым</option>
-      </select>
-    </div>
-    <div id="modalStarsWrap" style="margin:var(--s3) 0"></div>
-    <form class="modal-edit-form" id="modalEditForm" onsubmit="return false">
+    <p class="modal-author"><i class="ph ph-user"></i>${b.author}</p>
+    <form class="modal-form" onsubmit="return false">
       <div class="modal-form-row">
         <div class="form-group"><label>Кітап атауы</label><input id="meTitle" value="${esc(b.title)}" /></div>
         <div class="form-group"><label>Автор</label><input id="meAuthor" value="${esc(b.author)}" /></div>
       </div>
       <div class="modal-form-row">
-        <div class="form-group"><label>Бағасы (₸)</label><input type="number" id="mePrice" value="${b.price||0}" min="0" /></div>
+        <div class="form-group"><label>Бағасы (₸)</label><input type="number" id="mePrice" value="${b.price||0}" /></div>
         <div class="form-group"><label>Категория</label><select id="meCat">${catOpts}</select></div>
+        <div class="form-group"><label>Эмодзи</label><select id="meEmoji">${emojiOpts}</select></div>
       </div>
       <div class="modal-form-row">
-        <div class="form-group"><label>Эмодзи</label><select id="meEmoji">${emojiOpts}</select></div>
-        <div class="form-group"><label>Оқылған күн</label><input type="date" id="meReadDate" value="${b.readDate||''}" /></div>
+        <div class="form-group">
+          <label>Оқу мәртебесі</label>
+          <select id="modalStatus" class="status-select ${statusClass}">
+            <option value="unread"  ${b.status==='unread' ?'selected':''}>Жоспарда</option>
+            <option value="reading" ${b.status==='reading'?'selected':''}>Оқып жатырмын</option>
+            <option value="read"    ${b.status==='read'   ?'selected':''}>Оқыдым</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Оқылған күні</label><input type="date" id="meReadDate" value="${b.readDate||''}" /></div>
       </div>
-      <div class="form-group full" style="margin-bottom:var(--s4)">
-        <label>Мұқаба URL (қажет болса)</label>
+      <div id="modalStarsWrap"></div>
+      <div class="form-group">
+        <label><i class="ph ph-image"></i> Мұқаба URL</label>
         <input id="meCover" value="${esc(b.cover||'')}" placeholder="https://…" />
       </div>
       <div class="review-group">
@@ -529,41 +531,38 @@ function renderStats() {
 
 function renderPriceTable() {
   const paid = BOOKS.filter(b => b.price > 0);
-  const sorted = statsPriceMode === 'expensive'
-    ? [...paid].sort((a, b) => b.price - a.price)
-    : [...paid].sort((a, b) => a.price - b.price);
-  const top10 = sorted.slice(0, 10);
-
-  const titleEl = document.getElementById('priceSectionTitle');
-  if (titleEl) titleEl.innerHTML = `<i class="ph ph-sort-descending"></i> ${statsPriceMode === 'expensive' ? 'Ең қымбат 10 кітап' : 'Ең арзан 10 кітап'}`;
-
-  document.getElementById('priceTableBody').innerHTML = top10.map((b, i) => {
-    const cls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
-    return `<tr>
-      <td class="price-rank">${i + 1}</td>
-      <td class="price-name">${b.title}</td>
+  const sorted = [...paid].sort((a, b) =>
+    statsPriceMode === 'expensive' ? b.price - a.price : a.price - b.price
+  ).slice(0, 10);
+  const maxP = sorted[0]?.price || 1;
+  document.getElementById('priceTableBody').innerHTML = sorted.map((b, i) =>
+    `<tr>
+      <td>${i + 1}</td>
+      <td>${b.title}</td>
       <td>${b.author}</td>
-      <td class="price-val ${cls}">${b.price.toLocaleString('kk-KZ')} ₸</td>
-    </tr>`;
-  }).join('');
+      <td>${b.price.toLocaleString('kk-KZ')} ₸</td>
+      <td><div style="width:100%;background:var(--border);border-radius:4px;height:6px"><div style="height:6px;border-radius:4px;background:var(--accent);width:${Math.round(b.price/maxP*100)}%"></div></div></td>
+    </tr>`).join('');
 }
 
-document.querySelectorAll('.price-filter-btn').forEach(btn => {
+document.querySelectorAll('.price-sort-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.price-filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.price-sort-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    statsPriceMode = btn.dataset.priceMode;
+    statsPriceMode = btn.dataset.sort;
     renderPriceTable();
   });
 });
 
-/* ═══ RESET DATA ═══ */
+/* ═══ RESET ═══ */
 document.getElementById('resetDataBtn').addEventListener('click', () => {
-  if (!confirm('Деректерді бастапқы күйге қайтарасыз ба? Барлық өзгерістер жойылады.')) return;
-  BOOKS = DEFAULT_BOOKS.map(b => ({ rating: 0, readDate: '', review: '', status: 'unread', ...b }));
+  if (!confirm('Барлық деректерді бастапқы күйге қайтарасыз ба?')) return;
+  BOOKS    = DEFAULT_BOOKS.map(b => ({ rating: 0, readDate: '', review: '', status: 'unread', ...b }));
+  wishlist = [];
   sSet(SK_BOOKS, BOOKS);
-  renderBooks(); updateHeroStats();
-  showToast('Деректер қайта орнатылды ✓');
+  sSet(SK_WISH,  wishlist);
+  renderBooks(); updateHeroStats(); renderWishlist();
+  showToast('Деректер қалпына келтірілді ✓');
 });
 
 /* ═══ EXCEL EXPORT ═══ */
@@ -571,19 +570,19 @@ async function exportBooks() {
   if (typeof ExcelJS === 'undefined') { showToast('ExcelJS жүктелмеді', 'error'); return; }
   try {
     const wb = new ExcelJS.Workbook();
-    const ws = wb.addWorksheet('Кітаптар');
+    const ws = wb.addWorksheet('Кітаптарым');
     ws.columns = [
-      { header: '#',         key: 'id',     width: 6  },
+      { header: '#',         key: 'n',      width: 6  },
       { header: 'Атауы',     key: 'title',  width: 42 },
       { header: 'Автор',     key: 'author', width: 26 },
       { header: 'Категория', key: 'cat',    width: 14 },
       { header: 'Баға (₸)', key: 'price',  width: 12 },
-      { header: 'Мәртебе',   key: 'status', width: 16 },
-      { header: 'Баға (★)',  key: 'rating', width: 10 },
+      { header: 'Мәртебе',   key: 'status', width: 18 },
+      { header: 'Бағалау',   key: 'rating', width: 10 },
     ];
     ws.getRow(1).font = { bold: true };
-    BOOKS.forEach(b => ws.addRow({
-      id:     b.id,
+    BOOKS.forEach((b, i) => ws.addRow({
+      n:      i + 1,
       title:  b.title,
       author: b.author,
       cat:    b.cat,
